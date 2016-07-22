@@ -1,6 +1,8 @@
 'use strict';
 
-const promisify = require('../main/index');
+const
+    _ = require('lodash'),
+    promisify = require('../main/index');
 
 describe('fn', () => {
 
@@ -11,7 +13,7 @@ describe('fn', () => {
             expect(arg2).toBe('arg2');
             process.nextTick(() => {
                 cb(null, 'result');
-            })
+            });
         }
         
         const doSomethingAsyncPromised = promisify.fn(doSomethingAsync);
@@ -22,6 +24,41 @@ describe('fn', () => {
                 done();
             });
 
+    });
+
+    it('return first argument', (done) => {
+        function doSomethingAsync(cb) {
+            process.nextTick(() => {
+                cb(null, 'result1', 'result2');
+            });
+        }
+
+        const doSomethingAsyncPromised = promisify.fn(doSomethingAsync);
+
+        doSomethingAsyncPromised()
+            .then((result) => {
+                expect(result).toBe('result1');
+                done();
+            });
+    });
+
+    it('return arguments', (done) => {
+        function doSomethingAsync(cb) {
+            process.nextTick(() => {
+                cb(null, 'result1', 'result2');
+            });
+        }
+
+        const doSomethingAsyncPromised = promisify.mfn(doSomethingAsync);
+
+        doSomethingAsyncPromised()
+            .then((results) => {
+                expect(_.isArray(results)).toBeTruthy();
+                expect(results.length).toBe(2);
+                expect(results[0]).toBe('result1');
+                expect(results[1]).toBe('result2');
+                done();
+            });
     });
 
 });

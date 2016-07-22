@@ -1,6 +1,6 @@
 {
   "name": "advanced-promisify",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Converts callback-based functions or methods to Promise-based functions or methods.",
   "main": "dist/main/index.js",
   "author": {
@@ -17,10 +17,11 @@
   ],
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/huahongxinxin/advanced-promisify.git"
+    "type": "git",
+    "url": "https://github.com/huahongxinxin/advanced-promisify.git"
   },
   "dependencies": {
+    "es6-promise": "^3.2.1",
     "es6-promisify": "^4.1.0",
     "lodash": "^4.13.1",
     "property-names": "^1.0.0"
@@ -34,7 +35,7 @@
     "run-sequence": "^1.2.2"
   },
   "scripts": {
-  	"build": "gulp build",
+    "build": "gulp build",
     "test": "gulp test-only"
   }
 }

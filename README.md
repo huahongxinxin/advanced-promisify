@@ -68,6 +68,19 @@ redisClient.$hkeys("hash key")
     });
 ```
 
+## Promisify multi arguments
+```js
+const promisify = require("advanced-promisify");
+
+//fn multi arguments version
+promisify.mfn(...);
+
+//obj and cls multi arguments version
+obj.m$xxx(...);
+
+// will return array of multi arguments.
+```
+
 ## Tests
 ```bash
 $ npm run test

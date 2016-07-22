@@ -8,11 +8,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var promisify = require('../main/index');
+var _ = require('lodash'),
+    promisify = require('../main/index');
 
 describe('cls', function () {
 
     it('inherits', function (done) {
+        var that = void 0;
+
         var A = function () {
             function A() {
                 _classCallCheck(this, A);
@@ -21,6 +24,8 @@ describe('cls', function () {
             _createClass(A, [{
                 key: 'doSomethingAsync',
                 value: function doSomethingAsync(arg1, arg2, cb) {
+                    expect(this).toBeDefined();
+                    expect(this).toBe(that);
                     expect(arg1).toBe('arg1');
                     expect(arg2).toBe('arg2');
                     process.nextTick(function () {
@@ -46,10 +51,69 @@ describe('cls', function () {
 
         promisify.cls(B);
 
-        var b = new B();
+        var b = that = new B();
 
         b.$doSomethingAsync('arg1', 'arg2').then(function (result) {
             expect(result).toBe('result');
+            done();
+        });
+    });
+
+    it('return first argument', function (done) {
+        var A = function () {
+            function A() {
+                _classCallCheck(this, A);
+            }
+
+            _createClass(A, [{
+                key: 'doSomethingAsync',
+                value: function doSomethingAsync(cb) {
+                    process.nextTick(function () {
+                        cb(null, 'result1', 'result2');
+                    });
+                }
+            }]);
+
+            return A;
+        }();
+
+        promisify.cls(A);
+
+        var a = new A();
+
+        a.$doSomethingAsync().then(function (result) {
+            expect(result).toBe('result1');
+            done();
+        });
+    });
+
+    it('return arguments', function (done) {
+        var A = function () {
+            function A() {
+                _classCallCheck(this, A);
+            }
+
+            _createClass(A, [{
+                key: 'doSomethingAsync',
+                value: function doSomethingAsync(cb) {
+                    process.nextTick(function () {
+                        cb(null, 'result1', 'result2');
+                    });
+                }
+            }]);
+
+            return A;
+        }();
+
+        promisify.cls(A);
+
+        var a = new A();
+
+        a.m$doSomethingAsync().then(function (results) {
+            expect(_.isArray(results)).toBeTruthy();
+            expect(results.length).toBe(2);
+            expect(results[0]).toBe('result1');
+            expect(results[1]).toBe('result2');
             done();
         });
     });
