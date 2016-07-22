@@ -1,6 +1,6 @@
 {
   "name": "advanced-promisify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Converts callback-based functions or methods to Promise-based functions or methods.",
   "main": "dist/index.js",
   "author": {
@@ -34,8 +34,7 @@
     "run-sequence": "^1.2.2"
   },
   "scripts": {
-    "build": "gulp build",
-    "test": "gulp test-only",
-    "postinstall": "npm run build"
+  	"build": "gulp build",
+    "test": "gulp test-only"
   }
 }
